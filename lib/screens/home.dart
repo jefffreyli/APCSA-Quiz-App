@@ -3,19 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:accordion/accordion.dart';
 import 'question.dart';
 import '../utils.dart';
+import 'package:apcsa_quiz/fbhelper.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SignIn(),
-    );
-  }
-}
+fbHelper fb = fbHelper();
+Map categories = {};
+var topicquestions = {};
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -25,6 +17,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,8 +96,8 @@ class _HomeState extends State<Home> {
                 leftIcon:
                     const Icon(Icons.insights_rounded, color: Colors.white),
                 headerBackgroundColor: Colors.blue[300],
-                header: Text('Recursion', style: h3),
-                content: topicItem("awadaw wdas wad sad"),
+                header: Text('topic', style: h3),
+                content: topicItem("topic"),
                 contentHorizontalPadding: 5,
                 contentBorderWidth: 1,
               ))),
@@ -115,6 +112,8 @@ class _HomeState extends State<Home> {
           TextButton(
             child: Text("Take Quiz"),
             onPressed: () {
+              fb.getQuestions(subtitle);
+              topicquestions = questions;
               Navigator.push(
                 context,
                 MaterialPageRoute(
