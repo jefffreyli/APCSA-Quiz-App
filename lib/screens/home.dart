@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                     const Icon(Icons.insights_rounded, color: Colors.white),
                 headerBackgroundColor: Colors.blue[300],
                 header: Text('topic', style: h3),
-                content: topicItem("topic"),
+                content: topicItem("recursion"),
                 contentHorizontalPadding: 5,
                 contentBorderWidth: 1,
               ))),
@@ -112,8 +112,9 @@ class _HomeState extends State<Home> {
           TextButton(
             child: Text("Take Quiz"),
             onPressed: () {
-              fb.getQuestions(subtitle);
-              topicquestions = questions;
+              // fb.getQuestions('recursion');
+              fb.getQuestions('recursion');
+              print(questions);
               Navigator.push(
                 context,
                 MaterialPageRoute(

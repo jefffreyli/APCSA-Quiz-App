@@ -29,6 +29,13 @@
             {
               "client_id": "865776533202-uie4dv3rmqvtdvo5802tj2hrvvnp7b19.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "865776533202-20lvc0shjed2f6p4hfk3gppbieg8a1oq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.apcsaQuiz"
+              }
             }
           ]
         }
