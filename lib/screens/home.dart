@@ -4,6 +4,7 @@ import 'package:accordion/accordion.dart';
 import 'question.dart';
 import '../utils.dart';
 import '../fbhelper.dart';
+import 'dart:collection';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -109,33 +110,47 @@ class _HomeState extends State<Home> {
           TextButton(
             child: Text("Take Quiz"),
             onPressed: () async {
-              Map<String, List> qs = await fb.getQuestions('recursion');
-              List<String> keys = qs.keys.toList();
-              print(keys);
-              print(qs);
+              Map<String, List> qs = await fb.getQuestions('Recursion');
+              List all = buildQuestionList(qs);
+              print(all[0]);
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QuestionPage(
-                    question: Question(
-                      id: 1,
-                      imgUrl: 'assets/BlueberryWaffles.jpeg',
-                      isImg: true,
-                      question: keys[0],
-                      choices: [
-                        qs['question']![0],
-                        qs['question']![1],
-                        qs['question']![2],
-                        qs['question']![3]
-                      ],
-                      correct: 'correct_choice',
-                    ),
-                  ),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuestionPage(question: all[1]),
+                  ));
             },
           )
         ]));
+  }
+
+  List buildQuestionList(Map qs) {
+    List q = [];
+    qs.forEach((key, value) {
+      List choices = [];
+      value[0].forEach((k, v) => choices.add(k));
+      q.add(Question(
+          choices: choices,
+          imgUrl: 'assets/BlueberryWaffles.jpeg',
+          isImg: false,
+          id: 1,
+          question: key,
+          correct: checkCorrect(value).toString()));
+    });
+    return q;
+  }
+
+  int checkCorrect(List compsci) {
+    int index = 0;
+    bool lol = false;
+    compsci[0].forEach((key, value) {
+      if (value == true) {
+        lol = true;
+      }
+      if (lol == false && value == false) {
+        index += 1;
+      }
+    });
+    return index;
   }
 
   Widget signOutButton() {

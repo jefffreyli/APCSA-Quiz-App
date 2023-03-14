@@ -19,6 +19,13 @@ class _QuestionPage extends State<QuestionPage> {
     Colors.blue[300],
     Colors.blue[300]
   ];
+
+  Widget createButtons() {
+    List<Widget> column = List.generate(widget.question.choices.length,
+        (index) => buildOption(context, index, Icons.add));
+    return Column(children: column);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +36,7 @@ class _QuestionPage extends State<QuestionPage> {
                 child: Column(
               children: [
                 buildQuestion(context),
-                buildOption(context, 0, Icons.add),
-                buildOption(context, 1, Icons.add),
-                buildOption(context, 2, Icons.add),
-                buildOption(context, 3, Icons.add)
+                createButtons()
               ],
             ))),
         floatingActionButton: isVisible
@@ -56,7 +60,6 @@ class _QuestionPage extends State<QuestionPage> {
         : Container(
             height: height / 2,
             child: Text(
-                textAlign: TextAlign.center,
                 widget.question.question,
                 style: h3));
   }
@@ -73,7 +76,7 @@ class _QuestionPage extends State<QuestionPage> {
             ),
             onPressed: () {
               setState(() {
-                if (widget.question.correct == index) {
+                if (widget.question.correct == index.toString()) {
                   isVisible = true;
                   isCorrect = true;
                   showAlertDialog(context, index);
