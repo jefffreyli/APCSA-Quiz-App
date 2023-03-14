@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'signin.dart';
-import 'home.dart';
-
-List userInfo = [];
+import '../utils.dart';
+import '../fbHelper.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -13,138 +12,109 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width * 0.9;
-    var height = MediaQuery.of(context).size.height * 0.07;
-    TextEditingController t1 = TextEditingController();
-    TextEditingController t2 = TextEditingController();
-    return MaterialApp(
-        title: 'Login and Sign Up',
-        home: Scaffold(
-          body: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Form(
-                key: _formKey,
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      width: 500,
-                      padding: EdgeInsets.all(20),
-                      child: Column(children: [
-                        // ClipRRect(
-                        //     borderRadius: BorderRadius.circular(50.0),
-                        //     child: Image.asset("assets/bxsci-clubs-logo.png",
-                        //         width: 120)),
-                        const Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text('Sign up for SciClubs',
-                                style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFF097969)),
-                                textAlign: TextAlign.center)),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(children: [
-                              buildField("Full Name"),
-                              buildField("OSIS"),
-                              buildField("Graduation Year"),
-                              buildField("Email"),
-                              buildField("Password"),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 5, bottom: 5),
-                                  child: SizedBox(
-                                      width: 500,
-                                      height: height,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            backgroundColor:
-                                                const Color(0xFF097969)),
-                                        onPressed: () {
-                                          userInfo.clear();
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const Home(),
-                                              ),
-                                            );
-                                          },
-                                        child: const Text('Sign Up',
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white)),
-                                      )))
-                            ])),
-                        SizedBox(height: height / 4, width: width),
-                        Container(
-                            width: 500,
-                            height: height,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                backgroundColor: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignIn(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                  'Already have an account? Login here.',
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black)),
-                            )),
-                      ]),
-                    ),
-                  ),
-                ),
-              )),
+    return Scaffold(
+        body: Container(
+            margin: EdgeInsets.all(25),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              heading(),
+              const SizedBox(height: 50),
+              buildField(nameController, "Full Name"),
+              const SizedBox(height: 15),
+              buildField(emailController, "Email"),
+              const SizedBox(height: 15),
+              buildField(passwordController, "Password"),
+              const SizedBox(height: 30),
+              signUpButton(),
+              const SizedBox(height: 15),
+              signInButton()
+            ])));
+  }
+
+  Widget heading() {
+    return Text('Sign up for Quizzler',
+        style:
+            TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700, color: blue),
+        textAlign: TextAlign.center);
+  }
+
+  Widget signUpButton() {
+    return Container(
+        height: 40,
+        width: 300,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: blue),
+          onPressed: () {
+            fb.createUserWithEmailAndPassword(
+                emailController.text, passwordController.text);
+          },
+          child: const Text('Sign Up',
+              style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
         ));
   }
-}
 
-Widget buildField(String info) {
-  TextEditingController t1 = TextEditingController();
+  Widget signInButton() {
+    return Container(
+        width: 300,
+        height: 40,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SignIn(),
+              ),
+            );
+          },
+          child: const Text('Already have an account? Login here.',
+              style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black)),
+        ));
+  }
 
-  return Container(
-    margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-    height: 25,
-    decoration: BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          color: Colors.grey.shade300,
-          width: 1.0,
+  Widget buildField(TextEditingController t, String info) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+      height: 25,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey.shade300,
+            width: 1.0,
+          ),
         ),
       ),
-    ),
-    child: TextFormField(
-      controller: t1,
-      decoration: InputDecoration.collapsed(
-        hintText: '$info',
-        hintStyle: const TextStyle(fontSize: 16.0),
+      child: TextFormField(
+        controller: t,
+        decoration: InputDecoration.collapsed(
+          hintText: '$info',
+          hintStyle: const TextStyle(fontSize: 16.0),
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please enter your ${info.toLowerCase()}';
+          }
+          return null;
+        },
       ),
-      validator: (value) {
-        userInfo.add(t1.text);
-        print(userInfo);
-
-        if (value!.isEmpty) {
-          return 'Please enter your ${info.toLowerCase()}';
-        }
-        return null;
-      },
-    ),
-  );
+    );
+  }
 }

@@ -5,9 +5,6 @@ import 'question.dart';
 import '../utils.dart';
 import 'package:apcsa_quiz/fbhelper.dart';
 
-fbHelper fb = fbHelper();
-Map categories = {};
-var topicquestions = {};
 
 class Home extends StatefulWidget {
   const Home({super.key});
