@@ -77,11 +77,11 @@ class _SignInState extends State<SignIn> {
             print(passwordController.text);
             fb.signInWithEmailAndPassword(
                 emailController.text, passwordController.text);
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const Home(),
-              ),
-            );
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const Home(),
+            //   ),
+            // );
           },
           child: const Text('Sign in',
               style: TextStyle(

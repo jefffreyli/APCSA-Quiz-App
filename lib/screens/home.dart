@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:accordion/accordion.dart';
 import 'question.dart';
 import '../utils.dart';
-import 'package:apcsa_quiz/fbhelper.dart';
-
+import '../fbhelper.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -32,7 +31,8 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 10),
                 problemsProgress(),
                 SizedBox(height: 30),
-                allTopicsAccordion()
+                allTopicsAccordion(),
+                signOutButton()
               ],
             ))));
   }
@@ -133,5 +133,13 @@ class _HomeState extends State<Home> {
             },
           )
         ]));
+  }
+
+  Widget signOutButton() {
+    return ElevatedButton(
+        child: Text("Sign Out"),
+        onPressed: () {
+          fb.signOut();
+        });
   }
 }
