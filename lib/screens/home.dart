@@ -108,27 +108,30 @@ class _HomeState extends State<Home> {
           Text(subtitle, textAlign: TextAlign.start, style: TextStyle()),
           TextButton(
             child: Text("Take Quiz"),
-            onPressed: () {
-              // fb.getQuestions('recursion');
-              fb.getQuestions('recursion');
-              print(questions);
+            onPressed: () async {
+              Map<String, List> qs = await fb.getQuestions('recursion');
+              List<String> keys = qs.keys.toList();
+              print(keys);
+              print(qs);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => QuestionPage(
-                          question: Question(
-                              id: 1,
-                              imgUrl: 'assets/BlueberryWaffles.jpeg',
-                              isImg: true,
-                              question: "How many wood can a wood chuck chuck",
-                              choices: [
-                                "LOL I MEAN WHAT CAN I DO",
-                                "LOL I MEAN WHAT CAN I DO",
-                                "LOL I MEAN WHAT CAN I DO",
-                                "LOL I MEAN WHAT CAN I DO"
-                              ],
-                              correct: 3),
-                        )),
+                  builder: (context) => QuestionPage(
+                    question: Question(
+                      id: 1,
+                      imgUrl: 'assets/BlueberryWaffles.jpeg',
+                      isImg: true,
+                      question: keys[0],
+                      choices: [
+                        qs['question']![0],
+                        qs['question']![1],
+                        qs['question']![2],
+                        qs['question']![3]
+                      ],
+                      correct: 'correct_choice',
+                    ),
+                  ),
+                ),
               );
             },
           )

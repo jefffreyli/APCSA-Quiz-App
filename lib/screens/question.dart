@@ -106,8 +106,7 @@ class _QuestionPage extends State<QuestionPage> {
       content: isCorrect
           ? Text(
               'You choose ${widget.question.choices[index]}\nThe explanation is: Gang Whole lotta Ben')
-          : Text(
-              "You choose the wrong answer. The answer was option: ${widget.question.choices[widget.question.correct]}\n The explanation is: Gang Whole lotta Ben"),
+          : Text("You choose the wrong answer. The answer was option."),
       actions: [
         okButton,
       ],
@@ -128,7 +127,7 @@ class Question {
   bool isImg;
   String question;
   List choices;
-  int correct;
+  String correct;
   int id;
 
   Question(

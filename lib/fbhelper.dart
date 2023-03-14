@@ -12,18 +12,28 @@ fbHelper fb = new fbHelper();
 class fbHelper {
   fbHelper();
 
-  Future<void> getQuestions(String topic) async {
-    List qs = [];
-    db.collection("questions").get().then(
+  Future<Map<String, List>> getQuestions(String topic) async {
+    Map<String, List> qs = {};
+    await db
+        .collection("questions")
+        .where("topic", isEqualTo: topic)
+        .get()
+        .then(
       (querySnapshot) {
-        print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          qs.add(docSnapshot.data());
-          print(docSnapshot.data());
+          var doc = docSnapshot.data();
+          qs[doc['question']] = [
+            doc['choice_1'],
+            doc['choice_2'],
+            doc['choice_3'],
+            doc['choice_4'],
+            doc['correct_choice']
+          ];
         }
       },
       onError: (e) => print("Error completing: $e"),
     );
+    return qs;
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
