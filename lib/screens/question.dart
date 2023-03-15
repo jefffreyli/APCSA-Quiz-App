@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:apcsa_quiz/utils.dart';
 import 'package:apcsa_quiz/fbhelper.dart';
+import 'home.dart';
 
 class QuestionPage extends StatefulWidget {
   final Question question;
@@ -34,15 +35,27 @@ class _QuestionPage extends State<QuestionPage> {
             margin: EdgeInsets.all(20),
             child: SingleChildScrollView(
                 child: Column(
-              children: [
-                buildQuestion(context),
-                createButtons()
-              ],
+              children: [buildQuestion(context), createButtons()],
             ))),
         floatingActionButton: isVisible
             ? FloatingActionButton.extended(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  if (questionNumber == all.length - 1) {
+                    questionNumber = 0;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Home(),
+                        ));
+                  } else {
+                    questionNumber += 1;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              QuestionPage(question: all[questionNumber]),
+                        ));
+                  }
                 },
                 label: const Text('Correct, Move on'),
                 icon: const Icon(Icons.thumb_up))
@@ -59,9 +72,7 @@ class _QuestionPage extends State<QuestionPage> {
             child: Image.asset(widget.question.imgUrl))
         : Container(
             height: height / 2,
-            child: Text(
-                widget.question.question,
-                style: h3));
+            child: Text(widget.question.question, style: h3));
   }
 
   Widget buildOption(BuildContext context, int index, IconData icon) {

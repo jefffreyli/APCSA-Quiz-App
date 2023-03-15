@@ -4,7 +4,6 @@ import 'package:accordion/accordion.dart';
 import 'question.dart';
 import '../utils.dart';
 import '../fbhelper.dart';
-import 'dart:collection';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,6 +11,10 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
+
+
+  late List all;
+  int questionNumber = 0;
 
 class _HomeState extends State<Home> {
   @override
@@ -111,12 +114,12 @@ class _HomeState extends State<Home> {
             child: Text("Take Quiz"),
             onPressed: () async {
               Map<String, List> qs = await fb.getQuestions('Recursion');
-              List all = buildQuestionList(qs);
-              print(all[0]);
+              all = buildQuestionList(qs);
+              print(all[questionNumber]);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QuestionPage(question: all[1]),
+                    builder: (context) => QuestionPage(question: all[questionNumber]),
                   ));
             },
           )
