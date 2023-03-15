@@ -12,20 +12,14 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-
-  late List all;
-  int questionNumber = 0;
+late List all;
+int questionNumber = 0;
 
 class _HomeState extends State<Home> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Home")),
+        appBar: AppBar(title: Text("Home"), backgroundColor: blue,),
         body: Container(
             margin: EdgeInsets.all(20),
             child: SingleChildScrollView(
@@ -50,7 +44,7 @@ class _HomeState extends State<Home> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  stat(Color(0xffDCFCE7), "Correct", 10),
+                  stat(green, "Correct", 10),
                   stat(Colors.red[200], "Incorrect", 1),
                   stat(Color(0xffFFF9C3), "Not Started", 30),
                   stat(Color(0xffF3F4F6), "Overall", 50)
@@ -90,17 +84,31 @@ class _HomeState extends State<Home> {
   }
 
   Widget allTopicsAccordion() {
+    List topicsList = [
+      "Primitive Types",
+      "Using Objects",
+      "Control Flow",
+      "Iteration",
+      "Classes",
+      "Array",
+      "ArrayList",
+      "2D Array",
+      "Inheritance",
+      "Recursion"
+    ];
+
     return (Accordion(
       children: List.generate(
           10,
           (int index) => (AccordionSection(
                 leftIcon:
                     const Icon(Icons.insights_rounded, color: Colors.white),
-                headerBackgroundColor: Colors.blue[300],
-                header: Text('topic', style: h3),
-                content: topicItem("recursion"),
+                headerBackgroundColor: blue,
+                header: Text(topicsList[index], style: h2),
+                content: topicItem(topicsList[index]),
                 contentHorizontalPadding: 5,
                 contentBorderWidth: 1,
+                contentBorderColor: blue,
               ))),
     ));
   }
@@ -109,17 +117,18 @@ class _HomeState extends State<Home> {
     return Container(
         padding: EdgeInsets.all(10),
         child: Column(children: [
-          Text(subtitle, textAlign: TextAlign.start, style: TextStyle()),
+          Text(subtitle, textAlign: TextAlign.start, style: TextStyle(color: Colors.blueGrey[400])),
           TextButton(
-            child: Text("Take Quiz"),
+            child: Text("Take Quiz", style: TextStyle(color: blue)),
             onPressed: () async {
-              Map<String, List> qs = await fb.getQuestions('Recursion');
+              Map<String, List> qs = await fb.getQuestions(subtitle);
               all = buildQuestionList(qs);
               print(all[questionNumber]);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QuestionPage(question: all[questionNumber]),
+                    builder: (context) =>
+                        QuestionPage(question: all[questionNumber]),
                   ));
             },
           )

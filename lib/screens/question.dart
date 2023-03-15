@@ -14,23 +14,18 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPage extends State<QuestionPage> {
   bool isVisible = false;
   bool isCorrect = false;
-  List colors = [
-    Colors.blue[300],
-    Colors.blue[300],
-    Colors.blue[300],
-    Colors.blue[300]
-  ];
+  List colors = [blue, blue, blue, blue, blue];
 
   Widget createButtons() {
     List<Widget> column = List.generate(widget.question.choices.length,
-        (index) => buildOption(context, index, Icons.add));
+        (index) => buildOption(context, index, Icons.circle_outlined));
     return Column(children: column);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Home")),
+        appBar: AppBar(title: Text("Quiz"), backgroundColor: blue,),
         body: Container(
             margin: EdgeInsets.all(20),
             child: SingleChildScrollView(
@@ -57,7 +52,8 @@ class _QuestionPage extends State<QuestionPage> {
                         ));
                   }
                 },
-                label: const Text('Correct, Move on'),
+                label: Text('Correct, Move on'),
+                backgroundColor: green,
                 icon: const Icon(Icons.thumb_up))
             : null);
   }
@@ -92,7 +88,7 @@ class _QuestionPage extends State<QuestionPage> {
                   isCorrect = true;
                   showAlertDialog(context, index);
                 } else {
-                  colors[index] = Colors.red[200];
+                  colors[index] = red;
                   showAlertDialog(context, index);
                 }
               });

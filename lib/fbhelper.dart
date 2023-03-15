@@ -23,9 +23,7 @@ class fbHelper {
         for (var docSnapshot in querySnapshot.docs) {
           var doc = docSnapshot.data();
           var jit = doc['answers'];
-          qs['${Uri.decodeFull(doc['code'])} + \n${doc['text']}'] = 
-            [jit]
-          ;
+          qs['${Uri.decodeFull(doc['code'])} + \n${doc['text']}'] = [jit];
         }
       },
       onError: (e) => print("Error completing: $e"),
